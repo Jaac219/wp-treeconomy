@@ -1,4 +1,8 @@
 <?php 
+
+  // use Carbon_Fields\Container;
+  // use Carbon_Fields\Field;
+
   if(!defined('REDIRECT_URL')){
     define('REDIRECT_URL', 'https://www.facebook.com');
   }
@@ -27,12 +31,66 @@
         'redirect' => true
       ));
 
-      acf_add_options_sub_pag(array(
-       'page_title' => 'Theme General Settings',
-       'menu_title' => 'General',
-       'parent_slug' => 'theme-settings'
-      ));
+      // acf_add_options_sub_pag(array(
+      //  'page_title' => 'Theme General Settings',
+      //  'menu_title' => 'General',
+      //  'parent_slug' => 'theme-settings'
+      // ));
     }
+  }
+
+add_filter('acf/options_page/settings', 'crb_add_carbon_fields_options_page');
+function crb_add_carbon_fields_options_page($options) {
+    $options['title'] = __('Theme Options');
+    $options['pages'] = array('theme_options');
+    return $options;
+}
+
+// $custom_field = get_field('crb_text_field', 'option');
+
+//   if (!function_exists('crb_attach_theme_options')) {
+//     function crb_attach_theme_options() {
+//         $basic_options_container = Container::make( 'theme_options', __( 'Blocks' ) )
+//             ->add_fields( array(
+//                 Field::make( 'header_scripts', 'crb_header_script', __( 'Header Script' ) ),
+//                 Field::make( 'footer_scripts', 'crb_footer_script', __( 'Footer Script' ) ),
+//             ) );
+        
+//         // Add second options page under 'Basic Options'
+//         Container::make( 'theme_options', 'Header' )
+//             ->set_page_parent( $basic_options_container ) // reference to a top level container
+//             ->add_fields( array(
+//                 Field::make( 'text', 'crb_facebook_link', __( 'Facebook Link' ) ),
+//                 Field::make( 'text', 'crb_twitter_link', __( 'Twitter Link' ) ),
+//             ) );
+//             Container::make( 'theme_options', 'Footer' )
+//             ->set_page_parent( $basic_options_container ) // reference to a top level container
+//             ->add_fields( array(
+//                 Field::make( 'text', 'crb_facebook_link', __( 'Facebook Link' ) ),
+//                 Field::make( 'text', 'crb_twitter_link', __( 'Twitter Link' ) ),
+//             ) );
+//             Container::make( 'theme_options', 'Cookies' )
+//             ->set_page_parent( $basic_options_container ) // reference to a top level container
+//             ->add_fields( array(
+//                 Field::make( 'text', 'crb_facebook_link', __( 'Facebook Link' ) ),
+//                 Field::make( 'text', 'crb_twitter_link', __( 'Twitter Link' ) ),
+//             ) );
+//             Container::make( 'theme_options', 'About' )
+//             ->set_page_parent( $basic_options_container ) // reference to a top level container
+//             ->add_fields( array(
+//                 Field::make( 'text', 'crb_facebook_link', __( 'Facebook Link' ) ),
+//                 Field::make( 'text', 'crb_twitter_link', __( 'Twitter Link' ) ),
+//             ) );
+//     }
+//     add_action( 'carbon_fields_register_fields', 'crb_attach_theme_options' );
+//   }
+
+  if (!function_exists('crb_load')) {
+    function crb_load() {
+        require_once( 'vendor/autoload.php' );
+        \Carbon_Fields\Carbon_Fields::boot();
+    }
+    add_action( 'after_setup_theme', 'crb_load' );
   }
 
   if(!function_exists('a_mime_types')){
